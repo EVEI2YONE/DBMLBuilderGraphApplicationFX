@@ -8,5 +8,7 @@ public class GraphController {
 
     public void setCanvas(Canvas canvas) {
         canvasController = new CanvasController(canvas);
+        System.out.println("canvas received");
+        System.out.println(canvas);
     }
 }

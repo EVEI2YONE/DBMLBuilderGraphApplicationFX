@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 
 public class InteractiveController {
     private GraphController graphController = new GraphController();
@@ -28,5 +30,14 @@ public class InteractiveController {
 
     public void init() {
         graphController.setCanvas(canvas);
+    }
+
+    public void onTextChanged(InputMethodEvent inputMethodEvent) {
+    }
+
+    public void onKeyReleased(KeyEvent event) {
+    }
+
+    public void onKeyTyped(KeyEvent event) {
     }
 }

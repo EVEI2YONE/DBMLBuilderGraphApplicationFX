@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="409.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane prefHeight="409.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InteractiveController">
    <top>
       <HBox prefHeight="43.0" prefWidth="609.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +24,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="lineNumbers" prefHeight="366.0" prefWidth="27.0" />
-            <TextField fx:id="parserInput" prefHeight="366.0" prefWidth="178.0" />
+            <TextField fx:id="parserInput" onInputMethodTextChanged="#onTextChanged" onKeyReleased="#onKeyReleased" onKeyTyped="#onKeyTyped" prefHeight="366.0" prefWidth="178.0" />
          </children>
       </HBox>
    </left>
