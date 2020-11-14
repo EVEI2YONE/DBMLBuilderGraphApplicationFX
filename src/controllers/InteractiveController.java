@@ -2,13 +2,12 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
-
-import java.awt.*;
 
 public class InteractiveController {
     private GraphController graphController = new GraphController();
@@ -21,7 +20,7 @@ public class InteractiveController {
     //Listeners set from fxml layout whether to create a new file, save, share, or export
     //Can actually use a static file helper class
     @FXML
-    java.awt.TextField searchField;
+    TextField searchField;
     @FXML
     Button buttonNew, buttonSave, buttonShare;
     @FXML
@@ -40,11 +39,14 @@ public class InteractiveController {
     }
 
     public void onTextChanged(InputMethodEvent inputMethodEvent) {
+
     }
 
     public void onKeyReleased(KeyEvent event) {
+
     }
 
     public void onKeyTyped(KeyEvent event) {
+
     }
 }
