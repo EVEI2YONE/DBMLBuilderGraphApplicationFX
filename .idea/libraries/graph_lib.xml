@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="graph-lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.base" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.controls" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.fxml" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.graphics" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.media" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.swing" />
+      <root url="jar://$PROJECT_DIR$/../libs/graph-lib.jar!/javafx.web" />
+    </SOURCES>
+  </library>
+</component>

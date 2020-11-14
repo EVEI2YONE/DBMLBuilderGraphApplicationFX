@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="409.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InteractiveController">
+   <top>
+      <HBox prefHeight="43.0" prefWidth="609.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="searchField" />
+            <Button fx:id="buttonNew" mnemonicParsing="false" text="New" />
+            <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
+            <Button fx:id="buttonShare" mnemonicParsing="false" text="Share" />
+            <MenuButton fx:id="buttonMenuExport" mnemonicParsing="false" text="Export">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </MenuButton>
+         </children></HBox>
+   </top>
+   <left>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="lineNumbers" prefHeight="366.0" prefWidth="27.0" />
+            <TextField fx:id="parserInput" prefHeight="366.0" prefWidth="178.0" />
+         </children>
+      </HBox>
+   </left>
+   <center>
+      <Canvas fx:id="canvas" height="366.0" width="407.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
