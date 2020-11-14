@@ -1,8 +1,8 @@
 package models;
 
 import javafx.scene.canvas.GraphicsContext;
-import models.graph.DisplayGraphInterface;
-import models.shapes.Shape;
+import basic.shapes.DisplayGraphInterface;
+import basic.shapes.Shape;
 import models.graph.Vertex;
 
 public class Row extends Vertex implements DisplayGraphInterface {

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="basic-shapes-javafx-lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../libs/jar-folder/basic-shapes-javafx-lib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

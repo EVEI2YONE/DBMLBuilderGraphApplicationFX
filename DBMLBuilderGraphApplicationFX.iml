@@ -8,5 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="graph-lib" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="basic-graph-lib" level="project" />
+    <orderEntry type="library" name="basic-shapes-javafx-lib" level="project" />
   </component>
 </module>

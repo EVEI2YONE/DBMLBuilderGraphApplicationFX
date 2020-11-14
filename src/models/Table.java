@@ -1,8 +1,8 @@
 package models;
 
+import basic.shapes.DisplayGraphInterface;
+import basic.shapes.Shape;
 import javafx.scene.canvas.GraphicsContext;
-import models.graph.DisplayGraphInterface;
-import models.shapes.Shape;
 import models.graph.Vertex;
 
 public class Table extends Vertex implements DisplayGraphInterface {
