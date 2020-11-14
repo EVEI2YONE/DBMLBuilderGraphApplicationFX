@@ -1,20 +1,24 @@
+package models;
+
 import javafx.scene.canvas.GraphicsContext;
 import models.graph.DisplayGraphInterface;
 import models.shapes.Shape;
 import models.graph.Vertex;
 
-public class Row extends Vertex implements DisplayGraphInterface {
+public class Table extends Vertex implements DisplayGraphInterface {
 
-    private StringBuilder name;
-    private String type;
-    private RowConnection connection;
-    private Row next;
+    //private List<models.Row> rows = new ArrayList<>();
+    private boolean primaryKey;
 
-    public Row(String label) {
+    public void setPrimaryKey(boolean key) {
+        primaryKey = key;
+    }
+
+    public Table(String label) {
         super(label);
     }
 
-    public Row(String label, Shape val) {
+    public Table(String label, Shape val) {
         super(label, val);
     }
 

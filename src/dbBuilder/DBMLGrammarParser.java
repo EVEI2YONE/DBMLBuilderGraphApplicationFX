@@ -1,3 +1,7 @@
+package dbBuilder;
+
+import models.Row;
+import models.Table;
 import models.graph.Edge;
 import models.graph.Graph;
 
@@ -12,7 +16,7 @@ public class DBMLGrammarParser {
     private static Graph graph;
     private static StringBuilder content;
     private static String[] keywords =
-            {"Table", "Enum", "ref"};
+            {"models.Table", "Enum", "ref"};
     private static String[] types =
             {"int", "varchar"};
     private static Table table;
@@ -54,10 +58,10 @@ public class DBMLGrammarParser {
             return Math.min(current, nextIndex);
     }
 
-    //consume up to next valid name, }, (Table, Enum, ref, or $ (EOF))
+    //consume up to next valid name, }, (models.Table, Enum, ref, or $ (EOF))
     private static String consume(String type) {
         int closest = content.length()-1; // $ (EOF)
-        closest = getClosest("Table", closest);
+        closest = getClosest("models.Table", closest);
         closest = getClosest("Enum", closest);
         closest = getClosest("ref", closest);
         switch(type.toLowerCase()) {
@@ -87,14 +91,14 @@ public class DBMLGrammarParser {
 
     public static void testMethod() {
         content = new StringBuilder();
-        content.append("Table orders {\n" +
+        content.append("models.Table orders {\n" +
                 "    id int PK\n" +
                 "    user_id int\n" +
                 "    status varchar\n" +
                 "    created_at varchar\n" +
                 "}\n" +
                 "\n" +
-                "Table order_items {\n" +
+                "models.Table order_items {\n" +
                 "    order_id int\n" +
                 "    product_id int\n" +
                 "    quantity int\n" +
@@ -200,7 +204,7 @@ public class DBMLGrammarParser {
             issue = false;
             token = getToken();
             switch(token) {
-                case "Table":
+                case "models.Table":
                     if(!parseTable()) {
                         consume("table");
                         issue = true;
@@ -210,7 +214,7 @@ public class DBMLGrammarParser {
                 case "ref": parseRef(); break;
                 case "$": System.out.println("End of file"); break;
                 default:
-                    System.out.println("Expected 'Table', 'Enum' or 'ref'");
+                    System.out.println("Expected 'models.Table', 'Enum' or 'ref'");
                     consume("table");
                     issue = true;
             }
@@ -221,7 +225,7 @@ public class DBMLGrammarParser {
         } while(!token.equals("$"));
     }
 
-    //TABLE -> Table NAME { TABLE_CONTENT }
+    //TABLE -> models.Table NAME { TABLE_CONTENT }
     private static boolean parseTable() {
         String name = peekToken();
         if(validName(name)) {
@@ -319,11 +323,11 @@ public class DBMLGrammarParser {
         }
         else {
             if(!validName(token))
-                System.out.println("Row needs valid variable name");
+                System.out.println("models.Row needs valid variable name");
             else if(!validType(token))
-                System.out.println("Row needs valid type");
+                System.out.println("models.Row needs valid type");
             else if(!validType(token))
-                System.out.println("Row needs valid enum");
+                System.out.println("models.Row needs valid enum");
             else
                 System.out.println("SOME OTHER ERROR PARSING ROW");
             return false;

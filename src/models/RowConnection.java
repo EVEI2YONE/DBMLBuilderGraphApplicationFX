@@ -1,3 +1,5 @@
+package models;
+
 import models.graph.Edge;
 import models.graph.Vertex;
 
