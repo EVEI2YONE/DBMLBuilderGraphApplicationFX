@@ -1,9 +1,10 @@
 package dbBuilder;
 
-import models.Row;
-import models.Table;
-import models.graph.Edge;
-import models.graph.Graph;
+import basics.graph.Edge;
+import basics.graph.Graph;
+import basics.graph.Vertex;
+import models.shapes.RowContainer;
+import models.shapes.TableContainer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,17 +17,17 @@ public class DBMLGrammarParser {
     private static Graph graph;
     private static StringBuilder content;
     private static String[] keywords =
-            {"models.Table", "Enum", "ref"};
+            {"Table", "Enum", "ref"};
     private static String[] types =
             {"int", "varchar"};
-    private static Table table;
-    private static Row childRow;
+    private static TableContainer table;
+    private static RowContainer childRow;
     private static String tableType, rowType;
     private static List<Edge> edges = new ArrayList<>();
     private static boolean primaryKey = false;
 
     private static List<String> enums = new ArrayList<>();
-    private static List<String> tableVariables = new ArrayList<>();
+    private static List<RowContainer> tableVariables = new ArrayList<>();
     private static int lineNumber = 0;
 
     private static int getEndOfWord() {
@@ -58,10 +59,10 @@ public class DBMLGrammarParser {
             return Math.min(current, nextIndex);
     }
 
-    //consume up to next valid name, }, (models.Table, Enum, ref, or $ (EOF))
+    //consume up to next valid name, }, (Table, Enum, ref, or $ (EOF))
     private static String consume(String type) {
         int closest = content.length()-1; // $ (EOF)
-        closest = getClosest("models.Table", closest);
+        closest = getClosest("Table", closest);
         closest = getClosest("Enum", closest);
         closest = getClosest("ref", closest);
         switch(type.toLowerCase()) {
@@ -91,14 +92,14 @@ public class DBMLGrammarParser {
 
     public static void testMethod() {
         content = new StringBuilder();
-        content.append("models.Table orders {\n" +
+        content.append("Table orders {\n" +
                 "    id int PK\n" +
                 "    user_id int\n" +
                 "    status varchar\n" +
                 "    created_at varchar\n" +
                 "}\n" +
                 "\n" +
-                "models.Table order_items {\n" +
+                "Table order_items {\n" +
                 "    order_id int\n" +
                 "    product_id int\n" +
                 "    quantity int\n" +
@@ -165,13 +166,33 @@ public class DBMLGrammarParser {
         if(table == null) return;
         //REMINDER: NOTHING HAS BEEN ADDED TO THE GRAPH OFFICIALLY
         //ADD ALL VERTICES AND EDGES
-        String from = table.toString();
+
+        for(Edge e : edges) {
+            graph.addEdge(e);
+            //TODO: REMINDER THAT THIS IS FOR ANY 'REF' ROW CONNECTIONS
+        }
+
+        String from = table.getName();
         String to;
         for(Edge e : edges) {
-            to = e.getTo().getLabel();
+            to = from + " : " + e.getTo().getLabel();
             graph.addVertices(from, to);
         }
+        injectContainers();
         clear();
+    }
+
+    //Add " : " to containers due to ensure unique table:row vertices are added
+    private static void injectContainers() {
+        String tableName = table.getName();
+        Vertex t = graph.getVertex(tableName);
+        t.setValue(table);
+
+        for(RowContainer row : tableVariables) {
+            String rowName = tableName + " : " + row.getName();
+            Vertex r = graph.getVertex(rowName);
+            r.setValue(row);
+        }
     }
 
     public static void clear() {
@@ -188,11 +209,15 @@ public class DBMLGrammarParser {
 
     public static void addRow() {
         if(childRow == null) return;
-        String header = table.toString();
-        String rowName = childRow.toString();
-        Edge tablesRow = new Edge(table, childRow, header + " -> " + rowName);
+        String header = table.getName();
+        String rowName = childRow.getName();
+        Vertex v1 = new Vertex(header);
+        Vertex v2 = new Vertex(rowName);
+        Edge tablesRow = new Edge(v1, v2, header + " -> " + rowName);
         edges.add(tablesRow);
-        tableVariables.add(rowName);
+
+        RowContainer newRow = new RowContainer(rowName);
+        tableVariables.add(newRow);
     }
 
     //CONTAINERS -> CONTAINER | CONTAINER CONTAINERS
@@ -204,7 +229,7 @@ public class DBMLGrammarParser {
             issue = false;
             token = getToken();
             switch(token) {
-                case "models.Table":
+                case "Table":
                     if(!parseTable()) {
                         consume("table");
                         issue = true;
@@ -214,7 +239,7 @@ public class DBMLGrammarParser {
                 case "ref": parseRef(); break;
                 case "$": System.out.println("End of file"); break;
                 default:
-                    System.out.println("Expected 'models.Table', 'Enum' or 'ref'");
+                    System.out.println("Expected 'Table', 'Enum' or 'ref'");
                     consume("table");
                     issue = true;
             }
@@ -225,12 +250,12 @@ public class DBMLGrammarParser {
         } while(!token.equals("$"));
     }
 
-    //TABLE -> models.Table NAME { TABLE_CONTENT }
+    //TABLE -> Table NAME { TABLE_CONTENT }
     private static boolean parseTable() {
         String name = peekToken();
         if(validName(name)) {
             getToken();
-            table = new Table(name);
+            table = new TableContainer(name);
         }
         else {
             System.out.println("Invalid or no table name");
@@ -266,7 +291,7 @@ public class DBMLGrammarParser {
                     consume("row");
                 }
                 else {
-                    childRow = new Row(token);
+                    childRow = new RowContainer(token);
                     addRow(); //adds edge between table and row
                 }
             }
@@ -372,8 +397,8 @@ public class DBMLGrammarParser {
     private static boolean uniqueTableVariable(String name) {
         if(name.equals("$"))
             return false;
-        for(String vars : tableVariables)
-            if(name.equals(vars))
+        for(RowContainer vars : tableVariables)
+            if(name.equals(vars.getName()))
                 return false;
         return true;
     }

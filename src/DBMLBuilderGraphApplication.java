@@ -19,6 +19,7 @@ public class DBMLBuilderGraphApplication extends Application {
         //set up controller and initailize other controllers
         interactiveController = loader.getController();
         interactiveController.init();
+        interactiveController.setTextFieldListener();
         //start application
         Scene scene = new Scene(root);
         stage.setScene(scene);

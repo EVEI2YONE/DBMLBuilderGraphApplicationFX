@@ -1,7 +1,7 @@
 package models;
 
-import models.graph.Edge;
-import models.graph.Vertex;
+import basics.graph.Edge;
+import basics.graph.Vertex;
 
 public class RowConnection extends Edge {
     public RowConnection(Vertex a, Vertex b, String label) {

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane prefHeight="409.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InteractiveController">
+
+<BorderPane prefHeight="750.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InteractiveController">
    <top>
       <HBox prefHeight="43.0" prefWidth="609.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="searchField" />
-            <Button fx:id="buttonNew" mnemonicParsing="false" text="New" />
-            <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
-            <Button fx:id="buttonShare" mnemonicParsing="false" text="Share" />
-            <MenuButton fx:id="buttonMenuExport" mnemonicParsing="false" text="Export">
+            <Button fx:id="buttonNew" mnemonicParsing="false" onAction="#onActionButtonNew" text="New" />
+            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#onActionButtonSave" text="Save" />
+            <Button fx:id="buttonShare" mnemonicParsing="false" onAction="#onActionButtonShare" text="Share" />
+            <Button fx:id="buttonImport" mnemonicParsing="false" onAction="#onActionButtonImport" text="Import" />
+            <MenuButton fx:id="buttonMenuExport" mnemonicParsing="false" onAction="#onActionButtonMenuExport" text="Export">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
                 <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -20,14 +23,23 @@
          </children></HBox>
    </top>
    <left>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="707.0" prefWidth="313.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="lineNumbers" prefHeight="366.0" prefWidth="27.0" />
-            <TextField fx:id="parserInput" onInputMethodTextChanged="#onTextChanged" onKeyReleased="#onKeyReleased" onKeyTyped="#onKeyTyped" prefHeight="366.0" prefWidth="178.0" />
+            <ListView fx:id="lineNumbers" focusTraversable="false" prefHeight="366.0" prefWidth="27.0">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding></ListView>
+            <TextField fx:id="parserInput" alignment="TOP_LEFT" onInputMethodTextChanged="#onTextChanged" onKeyReleased="#onKeyReleased" onKeyTyped="#onKeyTyped" prefHeight="707.0" prefWidth="287.0">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding></TextField>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </HBox>
    </left>
    <center>
-      <Canvas fx:id="canvas" height="366.0" width="407.0" BorderPane.alignment="CENTER" />
+      <Canvas fx:id="canvas" height="707.0" width="1287.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

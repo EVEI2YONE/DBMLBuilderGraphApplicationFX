@@ -1,11 +1,11 @@
-models.Table users {
+Table users {
   id integer
   username varchar
   role varchar
   created_at timestamp
 }
 
-models.Table posts {
+Table posts {
   id integer [primary key]
   title varchar
   body text [note: 'Content of the post']

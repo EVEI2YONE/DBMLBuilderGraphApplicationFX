@@ -2,7 +2,6 @@
   <library name="basic-graph-lib">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../libs/jar-folder/basic-graph-lib.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../libs/jar-folder/basic-shapes-javafx-lib.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

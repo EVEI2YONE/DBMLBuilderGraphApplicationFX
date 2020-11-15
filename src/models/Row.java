@@ -1,16 +1,11 @@
 package models;
 
-import javafx.scene.canvas.GraphicsContext;
-import basic.shapes.DisplayGraphInterface;
 import basic.shapes.Shape;
-import models.graph.Vertex;
+import basics.graph.Vertex;
 
-public class Row extends Vertex implements DisplayGraphInterface {
+public class Row extends Vertex {
 
-    private StringBuilder name;
-    private String type;
-    private RowConnection connection;
-    private Row next;
+
 
     public Row(String label) {
         super(label);
@@ -18,11 +13,6 @@ public class Row extends Vertex implements DisplayGraphInterface {
 
     public Row(String label, Shape val) {
         super(label, val);
-    }
-
-    @Override
-    public void display(GraphicsContext graphicsContext) {
-
     }
 
     @Override
