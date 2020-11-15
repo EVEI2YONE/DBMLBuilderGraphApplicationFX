@@ -40,6 +40,6 @@
       </HBox>
    </left>
    <center>
-      <Canvas fx:id="canvas" height="707.0" width="1287.0" BorderPane.alignment="CENTER" />
+      <Canvas fx:id="canvas" height="707.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1287.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

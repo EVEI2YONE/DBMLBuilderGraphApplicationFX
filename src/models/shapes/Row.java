@@ -2,13 +2,12 @@ package models.shapes;
 
 import basic.shapes.Shape;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import models.RowConnection;
 
 public class Row extends Shape {
     private int
         rowPaddingTop = 5,
-        rowPaddingWidth = 15;
+        rowPaddingWidth = 10;
     private String name;
     private String type;
     private RowConnection connection;
@@ -47,9 +46,15 @@ public class Row extends Shape {
         g.fillRect(x-xOffset, y-yOffset, width, height);
         //draw text
         g.setFill(currStroke);
-        g.fillText(name, x-width/2+rowPaddingWidth, y);
+        g.fillText(name, x-width/2+rowPaddingWidth, y+rowPaddingTop);
         //draw outline of container
-        g.setFill(Color.BLACK);
+        g.setStroke(prevStroke);
         g.strokeRect(x-xOffset, y-yOffset, width, height);
+    }
+
+    @Override
+    public String toString() {
+        String[] _name = name.split(" : ");
+        return String.format("Row %s from Table %s", _name[1], _name[0]);
     }
 }

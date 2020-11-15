@@ -1,5 +1,7 @@
 package controllers;
 
+import basic.shapes.Shape;
+import basics.graph.Graph;
 import dbBuilder.DBMLGrammarParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +12,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
-import basics.graph.Graph;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import models.shapes.Table;
+
+import java.io.File;
 
 public class InteractiveController {
     private GraphController graphController = new GraphController();
@@ -50,14 +57,26 @@ public class InteractiveController {
     }
 
     public void onActionButtonNew(ActionEvent actionEvent) {
-        String filename = "C:\\Users\\azva_\\IdeaProjects\\DBMLBuilderGraphApplicationFX\\src\\resources\\text\\dbTest.txt";
-        g = DBMLGrammarParser.parseDB(filename);
-        graphController.setGraph(g);
-        graphController.createTableList();
-        graphController.calculatePlacement();
-        graphController.sort();
-        canvasController.setup(g);
-        canvasController.draw(g);
+        FileChooser fc = new FileChooser();
+        try {
+            fc.setInitialDirectory(new File("C:/Users/azva_/IdeaProjects/DBMLBuilderGraphApplicationFX/src/resources/text"));
+            File selectedFile = fc.showOpenDialog(new Stage());
+            String filename = selectedFile.getAbsolutePath();
+
+            g = DBMLGrammarParser.parseDB(filename);
+            graphController.setGraph(g);
+            graphController.createTableList();
+            graphController.calculatePlacement();
+            graphController.sort();
+
+            canvasController.setGraph(g);
+            canvasController.setup();
+            canvasController.draw();
+        } catch (Exception ex) {
+            System.out.println("Error reading file from Interactive Controller");
+        }
+
+
     }
 
     public void onActionButtonSave(ActionEvent actionEvent) {
@@ -89,4 +108,30 @@ public class InteractiveController {
     }
 
 
+    Shape container;
+    StringBuilder type = new StringBuilder();
+    public void onMouseDragged(MouseEvent mouseEvent) {
+        int x = (int) mouseEvent.getX(),
+            y = (int) mouseEvent.getY();
+        if(container != null) {
+            container.setX(x);
+            container.setY(y);
+            if(container.getClass() == Table.class)
+                graphController.updateRow((Table)container);
+
+            canvasController.draw();
+        }
+    }
+
+    public void onMouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    public void onMousePressed(MouseEvent mouseEvent) {
+        int x = (int) mouseEvent.getX(),
+            y = (int) mouseEvent.getY();
+
+        container = graphController.findContainer(x, y);
+        System.out.println(container);
+    }
 }

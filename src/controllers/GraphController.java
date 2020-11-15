@@ -1,5 +1,6 @@
 package controllers;
 
+import basic.shapes.Shape;
 import basics.graph.Graph;
 import basics.graph.Vertex;
 import javafx.scene.canvas.Canvas;
@@ -38,7 +39,7 @@ public class GraphController {
     public void calculatePlacement() {
         if(graph == null) return;
         if(width < 1 || height < 1) return;
-        int tableWidth = 150, tableHeight = 45;
+        int tableWidth = 180, tableHeight = 30;
         for(Vertex v : tableList) {
             Table table = (Table) v.getValue();
             table.setX(random.nextInt((int) width - tableWidth) + tableWidth / 2);
@@ -52,7 +53,7 @@ public class GraphController {
     public void calculateRowPlacement(Vertex v) {
         Table table = (Table)v.getValue();
         int tableHeight = table.getHeight();
-        int rowWidth = 150, rowHeight = 45;
+        int rowWidth = 180, rowHeight = 28;
         int rowCount = 0;
         int height = tableHeight;
         for (Vertex v2 : v.getAdjacencyList()) {
@@ -93,5 +94,27 @@ public class GraphController {
         else if(t.pointDistanceFromBounds(t.getX(), canvasHeight) < padding)
             return false; //bottom bounds
         return true;
+    }
+
+    public Shape findContainer(int x, int y) {
+        Shape shape = null;
+        int epsilon = 3;
+        for(Vertex v : tableList) {
+            Table table = (Table)v.getValue();
+            if(table.pointDistanceFromBounds(x, y) < epsilon) {
+                shape = table;
+                break;
+            }
+        }
+        return shape;
+    }
+
+
+    public void updateRow(Table container) {
+        for(Vertex v : tableList)
+            if(v.getValue() == container) {
+                calculateRowPlacement(v);
+                break;
+            }
     }
 }

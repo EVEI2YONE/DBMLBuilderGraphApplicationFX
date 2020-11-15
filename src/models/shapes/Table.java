@@ -1,13 +1,13 @@
 package models.shapes;
 
+import basic.shapes.MyMath;
 import basic.shapes.Shape;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class Table extends Shape {
     private int
         tablePaddingTop = 5,
-        tablePaddingWidth = 15,
+        tablePaddingWidth = 10,
         tableHeight;
     private String name;
 
@@ -42,22 +42,51 @@ public class Table extends Shape {
         double distance = 0;
         if(shape.getClass() == Table.class) {
             Table other = (Table) shape;
-            int x2 = (x - other.getX());
-            int y2 = (y - other.getY());
-            distance = Math.sqrt(x2*x2 + y2*y2);
+            distance = MyMath.calculateDistance(x, y, other.getX(), other.getY());
         }
         return distance;
     }
 
     @Override
-    public double pointDistanceFromBounds(int i, int i1) {
-        int vertical = (i - x < 0) ? -1 : 1;
-        int horizontal = (i - y < 0) ? -1 : 1;
-        double distance = 0;
-        //TODO: WORK ON POINT FROM TABLE (BOX) FORMULA
-        if(distance < 0) {
+    public double pointDistanceFromBounds(int i, int j) {
+        int
+            x1, y1, x2, y2;
 
+        int vertical;
+        int horizontal;
+        x1 = x-width/2;
+        x2 = x+width/2;
+        if(i - x1 < 0) { //past left bounds
+            horizontal = -1;
+            x2 = x1;
         }
+        else if(i - x2 > 0) { //past right bounds
+            horizontal = 1;
+            x1 = x2;
+        }
+        else //in xbounds
+            horizontal = 0;
+
+        y1 = y-height/2;
+        y2 = y+height/2;
+        if(j - y1 < 0) { //past upper bounds
+            vertical = 1;
+            y2 = y1;
+        }
+        else if(j - y2 > 0) { //past bottom bounds
+            vertical = -1;
+            y1 = y2;
+        }
+        else //in y bounds
+            vertical = 0;
+
+        //either in bounds or distance from corner
+        if(horizontal == 0 && vertical == 0) //in bounds
+            return -1;
+        double
+            xPoints[] = { x1, x ,x2 },
+            yPoints[] = { y1, y, y2 },
+            distance = MyMath.distancePointFromLine(xPoints, yPoints);
         return distance;
     }
 
@@ -71,9 +100,14 @@ public class Table extends Shape {
         g.fillRect(x-xOffset, y-yOffset, width, height);
         //draw text
         g.setFill(currStroke);
-        g.fillText(name, x-width/2+tablePaddingWidth, y);
+        g.fillText(name, x-width/2+tablePaddingWidth, y + tablePaddingTop);
         //draw outline
-        g.setStroke(Color.BLACK);
+        g.setStroke(prevStroke);
         g.strokeRect(x-xOffset, y-yOffset, width, height);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("table %s", name);
     }
 }

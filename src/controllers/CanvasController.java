@@ -16,32 +16,41 @@ import models.shapes.Table;
 public class CanvasController {
     Canvas canvas;
     GraphicsContext g;
+    Graph graph;
     public CanvasController(Canvas canvas) {
         this.canvas = canvas;
         if(canvas != null)
             g = canvas.getGraphicsContext2D();
     }
+    public void setGraph(Graph graph) { this.graph = graph; }
 
-    public void setup(Graph graph) {
+    public void setup() {
+        if(graph == null) return;
         for(Vertex v : graph.getVertices()) {
             if(v.getValue().getClass() == Table.class){
                 Table table = (Table) v.getValue();
-                table.setCurrFill(Color.rgb(0,55,180));
-                table.setCurrStroke(Color.rgb(250, 250, 250));
+                Color
+                    tableContainer = Color.rgb(0,55,180),
+                    textStroke = Color.rgb(250, 250, 250);
+                table.setCurrFill(tableContainer);
+                table.setCurrStroke(textStroke);
+                //table.setPrevStroke(tableContainer);
             }
             else if(v.getValue().getClass() == Row.class){
                 Row row = (Row)v.getValue();
-                row.setCurrFill(Color.rgb(230, 230, 230, .9));
+                Color rowContainer = Color.rgb(230, 230, 230, .9);
+                row.setCurrFill(rowContainer);
                 row.setCurrStroke(Color.BLACK);
+                //row.setPrevStroke(rowContainer);
             }
         }
         FontWeight weight = FontWeight.THIN;
         FontPosture posture = FontPosture.REGULAR;
-        double size = 14;
-        Font font = new Font("Calibri", 15);
+        Font font = new Font("Calibri", 16);
         g.setFont(font);
     }
-    public void draw(Graph graph) {
+    public void draw() {
+        if(graph == null) return;
         //clear background
         g.setFill(Color.WHITE);
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
