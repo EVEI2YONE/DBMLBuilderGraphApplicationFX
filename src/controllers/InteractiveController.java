@@ -53,7 +53,9 @@ public class InteractiveController {
         String filename = "C:\\Users\\azva_\\IdeaProjects\\DBMLBuilderGraphApplicationFX\\src\\resources\\text\\dbTest.txt";
         g = DBMLGrammarParser.parseDB(filename);
         graphController.setGraph(g);
+        graphController.createTableList();
         graphController.calculatePlacement();
+        graphController.sort();
         canvasController.setup(g);
         canvasController.draw(g);
     }

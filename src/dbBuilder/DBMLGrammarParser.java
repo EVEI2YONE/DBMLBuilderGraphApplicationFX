@@ -3,8 +3,8 @@ package dbBuilder;
 import basics.graph.Edge;
 import basics.graph.Graph;
 import basics.graph.Vertex;
-import models.shapes.RowContainer;
-import models.shapes.TableContainer;
+import models.shapes.Row;
+import models.shapes.Table;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,14 +20,14 @@ public class DBMLGrammarParser {
             {"Table", "Enum", "ref"};
     private static String[] types =
             {"int", "varchar"};
-    private static TableContainer table;
-    private static RowContainer childRow;
+    private static Table table;
+    private static Row childRow;
     private static String tableType, rowType;
     private static List<Edge> edges = new ArrayList<>();
     private static boolean primaryKey = false;
 
     private static List<String> enums = new ArrayList<>();
-    private static List<RowContainer> tableVariables = new ArrayList<>();
+    private static List<Row> tableVariables = new ArrayList<>();
     private static int lineNumber = 0;
 
     private static int getEndOfWord() {
@@ -188,7 +188,7 @@ public class DBMLGrammarParser {
         Vertex t = graph.getVertex(tableName);
         t.setValue(table);
 
-        for(RowContainer row : tableVariables) {
+        for(Row row : tableVariables) {
             String rowName = tableName + " : " + row.getName();
             Vertex r = graph.getVertex(rowName);
             r.setValue(row);
@@ -216,7 +216,7 @@ public class DBMLGrammarParser {
         Edge tablesRow = new Edge(v1, v2, header + " -> " + rowName);
         edges.add(tablesRow);
 
-        RowContainer newRow = new RowContainer(rowName);
+        Row newRow = new Row(rowName);
         tableVariables.add(newRow);
     }
 
@@ -255,7 +255,7 @@ public class DBMLGrammarParser {
         String name = peekToken();
         if(validName(name)) {
             getToken();
-            table = new TableContainer(name);
+            table = new Table(name);
         }
         else {
             System.out.println("Invalid or no table name");
@@ -291,7 +291,7 @@ public class DBMLGrammarParser {
                     consume("row");
                 }
                 else {
-                    childRow = new RowContainer(token);
+                    childRow = new Row(token);
                     addRow(); //adds edge between table and row
                 }
             }
@@ -397,7 +397,7 @@ public class DBMLGrammarParser {
     private static boolean uniqueTableVariable(String name) {
         if(name.equals("$"))
             return false;
-        for(RowContainer vars : tableVariables)
+        for(Row vars : tableVariables)
             if(name.equals(vars.getName()))
                 return false;
         return true;

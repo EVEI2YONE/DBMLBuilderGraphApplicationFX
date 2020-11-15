@@ -3,31 +3,28 @@ package models.shapes;
 import basic.shapes.Shape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import models.RowConnection;
 
-public class TableContainer extends Shape {
+public class Row extends Shape {
     private int
-        tablePaddingTop = 5,
-        tablePaddingWidth = 15;
+        rowPaddingTop = 5,
+        rowPaddingWidth = 15;
     private String name;
+    private String type;
+    private RowConnection connection;
+    private Row next;
 
-    private boolean primaryKey;
-
-    public void setPrimaryKey(boolean key) {
-        primaryKey = key;
-    }
-    public boolean hasPrimaryKey() { return primaryKey; }
-    public String getName() { return name ; }
-
-    public TableContainer(String name) {
-        super();
+    public Row(String name) {
         this.name = name;
     }
 
-    public int getTablePadding() {
-        return tablePaddingWidth;
+    public String getName() { return name; }
+
+    public void setRowPadding(int rowPadding) {
+        this.rowPaddingWidth = rowPadding;
     }
-    public void setTablePadding(int tablePadding) {
-        this.tablePaddingWidth = tablePadding;
+    public int getRowPadding() {
+        return rowPaddingWidth;
     }
 
     @Override
@@ -50,9 +47,9 @@ public class TableContainer extends Shape {
         g.fillRect(x-xOffset, y-yOffset, width, height);
         //draw text
         g.setFill(currStroke);
-        g.fillText(name, x-width/2+tablePaddingWidth, y);
-        //draw outline
-        g.setStroke(Color.BLACK);
+        g.fillText(name, x-width/2+rowPaddingWidth, y);
+        //draw outline of container
+        g.setFill(Color.BLACK);
         g.strokeRect(x-xOffset, y-yOffset, width, height);
     }
 }

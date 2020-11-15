@@ -9,12 +9,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import models.shapes.RowContainer;
-import models.shapes.TableContainer;
+import models.shapes.Row;
+import models.shapes.Table;
 
 //THIS CONTROLLER WILL HANDLE CANVAS INTERACTIONS
 public class CanvasController {
-
     Canvas canvas;
     GraphicsContext g;
     public CanvasController(Canvas canvas) {
@@ -25,13 +24,13 @@ public class CanvasController {
 
     public void setup(Graph graph) {
         for(Vertex v : graph.getVertices()) {
-            if(v.getValue().getClass() == TableContainer.class){
-                TableContainer table = (TableContainer) v.getValue();
-                table.setCurrFill(Color.rgb(0,25,110));
+            if(v.getValue().getClass() == Table.class){
+                Table table = (Table) v.getValue();
+                table.setCurrFill(Color.rgb(0,55,180));
                 table.setCurrStroke(Color.rgb(250, 250, 250));
             }
-            else if(v.getValue().getClass() == RowContainer.class){
-                RowContainer row = (RowContainer)v.getValue();
+            else if(v.getValue().getClass() == Row.class){
+                Row row = (Row)v.getValue();
                 row.setCurrFill(Color.rgb(230, 230, 230, .9));
                 row.setCurrStroke(Color.BLACK);
             }
@@ -44,7 +43,10 @@ public class CanvasController {
     }
     public void draw(Graph graph) {
         //clear background
-        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.setFill(Color.WHITE);
+        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.setStroke(Color.BLACK);
+        g.strokeRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //draw data tables
         for(Vertex v : graph.getVertices())

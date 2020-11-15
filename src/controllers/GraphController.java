@@ -3,8 +3,8 @@ package controllers;
 import basics.graph.Graph;
 import basics.graph.Vertex;
 import javafx.scene.canvas.Canvas;
-import models.shapes.RowContainer;
-import models.shapes.TableContainer;
+import models.shapes.Row;
+import models.shapes.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ public class GraphController {
     private Graph graph;
     private double width, height;
     private Random random = new Random();
+    private List<Vertex> tableList = new ArrayList<>();
 
     public void setUp(Canvas canvas) {
         width = canvas.getWidth();
@@ -24,48 +25,73 @@ public class GraphController {
     public void setGraph(Graph g) {
         graph = g;
     }
+
+    public void createTableList() {
+        for(Vertex v : graph.getVertices()) {
+            if(v.getValue() == null) continue;
+            if (v.getValue().getClass() == Table.class) {
+                tableList.add(v);
+            }
+        }
+    }
+
     public void calculatePlacement() {
         if(graph == null) return;
         if(width < 1 || height < 1) return;
-        List<Vertex> tables = new ArrayList<>();
-        List<Vertex> rows = new ArrayList<>();
-
         int tableWidth = 150, tableHeight = 45;
-        int rowWidth = 150, rowHeight = 45;
-        List<Integer> xPoints = new ArrayList<>();
-        List<Integer> yPoints = new ArrayList<>();
-        for(Vertex v : graph.getVertices()) {
-            if(v.getValue() == null) continue;
-            if (v.getValue().getClass() == TableContainer.class) {
-                TableContainer table = (TableContainer) v.getValue();
-                table.setX(random.nextInt((int) width - tableWidth) + tableWidth/2);
-                table.setY(random.nextInt((int) height - tableHeight) + tableHeight/2);
-                table.setWidth(tableWidth);
-                table.setHeight(tableHeight);
-                int rowCount = 0;
-                for (Vertex v2 : v.getAdjacencyList()) {
-                    if(v2.getValue() == null) continue;
-                    RowContainer row = (RowContainer) v2.getValue();
-                    int yOffset = tableHeight/2 + rowHeight * rowCount + rowHeight / 2;
-                    row.setX(table.getX());
-                    row.setY(table.getY() + yOffset);
-                    row.setWidth(rowWidth);
-                    row.setHeight(rowHeight);
-                    rowCount++;
-                }
-            }
+        for(Vertex v : tableList) {
+            Table table = (Table) v.getValue();
+            table.setX(random.nextInt((int) width - tableWidth) + tableWidth / 2);
+            table.setY(random.nextInt((int) height - tableHeight) + tableHeight / 2);
+            table.setWidth(tableWidth);
+            table.setHeight(tableHeight);
+            calculateRowPlacement(v);
         }
+    }
 
-        //TODO: THINK MORE ABOUT CALCULATING OPTIMAL DATABASE TABLE PLACEMENT
-        // - MAYBE JUST THE CENTER
-        // - MAYBE AN OPEN/NON-OVERLAPPING AREA?
-        int
-            canvasPadding = 20,
-            TableContainerMargin = 20,
-            itemsAcross = (int)(width-canvasPadding*2), //table container width
-            targetMargin = (itemsAcross-1); // table container margin
-            itemsAcross = itemsAcross - targetMargin;
-        int targetWidth = itemsAcross*30/20,
-            targetHeight = (tables.size() / targetWidth);
+    public void calculateRowPlacement(Vertex v) {
+        Table table = (Table)v.getValue();
+        int tableHeight = table.getHeight();
+        int rowWidth = 150, rowHeight = 45;
+        int rowCount = 0;
+        int height = tableHeight;
+        for (Vertex v2 : v.getAdjacencyList()) {
+            if (v2.getValue() == null) continue;
+            Row row = (Row) v2.getValue();
+            int yOffset = tableHeight / 2 + rowHeight * rowCount + rowHeight / 2;
+            row.setX(table.getX());
+            row.setY(table.getY() + yOffset);
+            row.setWidth(rowWidth);
+            row.setHeight(rowHeight);
+            rowCount++;
+            height += rowHeight;
+        }
+        table.setTableHeight(height);
+    }
+
+    private int padding = 20;
+    public void sort() {
+        if(graph == null) return;
+        int x = padding, y = padding; //initial padding
+        for (Vertex v : tableList) {
+            Table t = (Table) v.getValue();
+
+        }
+    }
+
+    public boolean inBounds(Table t){
+        int tableHeight = t.getTableHeight();
+        int height = t.getHeight() + tableHeight/2;
+        int canvasWidth = (int) canvasController.canvas.getWidth();
+        int canvasHeight = (int) canvasController.canvas.getHeight();
+        if(t.pointDistanceFromBounds(0, height) < padding)
+            return false; //left bounds
+        else if(t.pointDistanceFromBounds(t.getWidth(), 0) < padding)
+            return false; //top bounds
+        else if(t.pointDistanceFromBounds(canvasWidth, height) < padding)
+            return false; //rigth bounds
+        else if(t.pointDistanceFromBounds(t.getX(), canvasHeight) < padding)
+            return false; //bottom bounds
+        return true;
     }
 }

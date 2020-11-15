@@ -1,5 +1,5 @@
 Table orders {
-    id int PK
+    something_else int PK
     user_id int
     status varchar
     created_at varchar
