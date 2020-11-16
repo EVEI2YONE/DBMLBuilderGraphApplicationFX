@@ -83,8 +83,9 @@ public class InteractiveController {
             fc.setInitialDirectory(new File("C:/Users/azva_/IdeaProjects/DBMLBuilderGraphApplicationFX/src/resources/text"));
             File selectedFile = fc.showOpenDialog(new Stage());
             String filename = selectedFile.getAbsolutePath();
-
-            g = DBMLGrammarParser.parseDB(filename);
+            g = new Graph();
+            DBMLGrammarParser.setGraph(g);
+            DBMLGrammarParser.parseDB(filename);
             update();
         } catch (Exception ex) {
             System.out.println("Error reading file from Interactive Controller");
@@ -128,10 +129,12 @@ public class InteractiveController {
     private long lastReleased = 0;
     public void onKeyReleased(KeyEvent event) {
         String input = parserInput.getText();
-        g = DBMLGrammarParser.build(input);
-        update();
-        lastReleased = System.currentTimeMillis();
-        sync = true;
+        if(!input.equals("")) {
+            DBMLGrammarParser.build(input);
+            update();
+            lastReleased = System.currentTimeMillis();
+            sync = true;
+        }
     }
 
     public void start() {
@@ -161,7 +164,7 @@ public class InteractiveController {
                 if(end - lastReleased > 201) {
                     lastReleased = end * 2;
                     String input = parserInput.getText();
-                    g = DBMLGrammarParser.build(input);
+                    DBMLGrammarParser.build(input);
                     update();
                     sync = false;
                 }

@@ -30,6 +30,7 @@ public class DBMLGrammarParser {
     private static List<Row> tableVariables = new ArrayList<>();
     private static int lineNumber = 0;
 
+    public static void setGraph(Graph g) { graph = g; }
     private static int getEndOfWord() {
         int space = content.indexOf(" ");
         int recent = (space < 0) ? 1 : space;
@@ -37,12 +38,10 @@ public class DBMLGrammarParser {
         recent = (content.length() == 0) ? 0 : recent;
         return recent;
     }
-
     private static String peekToken(){
         int recent = getEndOfWord();
         return content.substring(0, recent);
     }
-
     private static String getToken() {
         String token = peekToken();
         int recent = getEndOfWord();
@@ -50,7 +49,6 @@ public class DBMLGrammarParser {
         content.trimToSize();
         return token;
     }
-
     private static int getClosest(String str, int current) {
         int nextIndex = content.indexOf(str);
         if(nextIndex == -1)
@@ -58,7 +56,6 @@ public class DBMLGrammarParser {
         else
             return Math.min(current, nextIndex);
     }
-
     //consume up to next valid name, }, (Table, Enum, ref, or $ (EOF))
     private static String consume(String type) {
         int closest = content.length()-1; // $ (EOF)
@@ -81,7 +78,6 @@ public class DBMLGrammarParser {
         content.delete(0, closest);
         return str;
     }
-
     private static String nextValidName() {
         String[] words = content.toString().split(" ");
         for(String word : words)
@@ -89,34 +85,7 @@ public class DBMLGrammarParser {
                 return word;
         return "$"; //return EOF
     }
-
-    public static void testMethod() {
-        content = new StringBuilder();
-        content.append("Table orders {\n" +
-                "    id int PK\n" +
-                "    user_id int\n" +
-                "    status varchar\n" +
-                "    created_at varchar\n" +
-                "}\n" +
-                "\n" +
-                "Table order_items {\n" +
-                "    order_id int\n" +
-                "    product_id int\n" +
-                "    quantity int\n" +
-                "}");
-        content.trimToSize();
-        content = new StringBuilder(content.toString().replaceAll("\\s+", " "));
-        content.delete(0, 10);
-        String _table = consume("table");
-        System.out.println(_table);
-
-        content.delete(0, 44);
-        String row = consume("row");
-        System.out.println(row);
-    }
-
-    public static Graph build(String input){
-        graph = new Graph();
+    public static void build(String input){
         input = input.trim();
         String[] temp = input.split("\\s+");
         content = new StringBuilder();
@@ -130,7 +99,6 @@ public class DBMLGrammarParser {
         }
         content.append(" $");
         parseContainer();
-        return graph;
     }
 
     private static void buildFromFile(String filename) throws IOException{
@@ -167,8 +135,7 @@ public class DBMLGrammarParser {
         }
     }
 
-    public static Graph parseDB(String filename) {
-        graph = new Graph();
+    public static void parseDB(String filename) {
         try {
             buildFromFile(filename);
             System.out.println("DONE");
@@ -177,7 +144,6 @@ public class DBMLGrammarParser {
         }
 
         parseContainer();
-        return graph;
     }
 
     public static void addTable() {
