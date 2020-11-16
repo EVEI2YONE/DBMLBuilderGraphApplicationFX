@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox prefHeight="28.0" prefWidth="265.0" stylesheets="@../stylesheets/stylesheets.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="labelNumber" alignment="TOP_RIGHT" prefHeight="15.0" prefWidth="41.0" textAlignment="RIGHT">
+        <font>
+            <Font name="Calibri" size="15.0" />
+        </font>
+        <opaqueInsets>
+            <Insets />
+        </opaqueInsets>
+        <HBox.margin>
+            <Insets />
+        </HBox.margin>
+        <padding>
+            <Insets top="5.0" />
+        </padding>
+    </Label>
+    <TextArea fx:id="parserInput" maxHeight="44.0" minHeight="15.0" prefHeight="44.0" prefRowCount="1" prefWidth="265.0">
+    <font>
+        <Font name="Calibri" size="15.0" />
+    </font>
+        <opaqueInsets>
+            <Insets />
+        </opaqueInsets>
+    </TextArea>
+</HBox>
