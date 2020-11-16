@@ -115,7 +115,25 @@ public class DBMLGrammarParser {
         System.out.println(row);
     }
 
-    private static void build(String filename) throws IOException{
+    public static Graph build(String input){
+        graph = new Graph();
+        input = input.trim();
+        String[] temp = input.split("\\s+");
+        content = new StringBuilder();
+        int count = 0;
+        while(count < temp.length) {
+            if(count > 0)
+                if(!temp[count].equals(""))
+                    content.append(" ");
+            content.append(temp[count]);
+            count++;
+        }
+        content.append(" $");
+        parseContainer();
+        return graph;
+    }
+
+    private static void buildFromFile(String filename) throws IOException{
         content = new StringBuilder();
         File file;
         FileReader fr = null;
@@ -152,7 +170,7 @@ public class DBMLGrammarParser {
     public static Graph parseDB(String filename) {
         graph = new Graph();
         try {
-            build(filename);
+            buildFromFile(filename);
             System.out.println("DONE");
         }catch(Exception ex) {
             System.out.println("Error opening file");

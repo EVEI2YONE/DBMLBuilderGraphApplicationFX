@@ -23,21 +23,14 @@
          </children></HBox>
    </top>
    <left>
-      <HBox prefHeight="707.0" prefWidth="313.0" BorderPane.alignment="CENTER">
-         <children>
-            <ListView fx:id="lineNumbers" focusTraversable="false" prefHeight="366.0" prefWidth="27.0">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding></ListView>
-            <TextField fx:id="parserInput" alignment="TOP_LEFT" onInputMethodTextChanged="#onTextChanged" onKeyReleased="#onKeyReleased" onKeyTyped="#onKeyTyped" prefHeight="707.0" prefWidth="287.0">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding></TextField>
-         </children>
+      <VBox fx:id="inputContainer" onKeyReleased="#onKeyReleased" prefHeight="707.0" prefWidth="312.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
-      </HBox>
+         <children>
+            <TextArea fx:id="parserInput" prefHeight="712.0" prefWidth="312.0" />
+         </children>
+      </VBox>
    </left>
    <center>
       <Canvas fx:id="canvas" height="707.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1287.0" BorderPane.alignment="CENTER" />

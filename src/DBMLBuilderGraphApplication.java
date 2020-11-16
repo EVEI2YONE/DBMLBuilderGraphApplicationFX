@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 
 public class DBMLBuilderGraphApplication extends Application {
 
+    private static InteractiveController interactiveController;
     @Override
     public void start(Stage stage) throws Exception {
-        InteractiveController interactiveController;
         VBox root = new VBox();
         //load fxml and add
         FXMLLoader loader = new FXMLLoader(getClass().getResource("./resources/fxml/interactive-dbml-builder.fxml"));
@@ -19,7 +19,7 @@ public class DBMLBuilderGraphApplication extends Application {
         //set up controller and initailize other controllers
         interactiveController = loader.getController();
         interactiveController.init();
-        interactiveController.setTextFieldListener();
+        interactiveController.start();
         //start application
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -28,5 +28,7 @@ public class DBMLBuilderGraphApplication extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        if(interactiveController != null)
+            interactiveController.stop();
     }
 }

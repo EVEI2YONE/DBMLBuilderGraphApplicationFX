@@ -7,17 +7,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.shapes.Table;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InteractiveController {
     private GraphController graphController = new GraphController();
@@ -39,21 +42,39 @@ public class InteractiveController {
     MenuButton buttonMenuExport;
     //used for updating GraphController to create new DB structures
     @FXML
-    ListView lineNumbers;
-    @FXML
-    TextField parserInput;
+    TextArea parserInput;
     //don't use, just return and let GraphController handle it
+    @FXML
+    VBox inputContainer;
     @FXML
     Canvas canvas;
 
+    List<TextInputController> inputControllers = new ArrayList<>();
     public void init() {
         graphController.setUp(canvas);
         canvasController = new CanvasController(canvas);
-    }
-    public void setTextFieldListener() {
-        parserInput.textProperty().addListener(e -> {
-            System.out.println("text changed");
-        });
+//        try {
+////          TextInputController.setContainer(inputContainer);
+////          TextInputController.createNew();
+//            //Creating the scroll pane
+////            ScrollPane scroll = new ScrollPane();
+////            scroll.setPrefSize(265, 800);
+//            TableView scroll = new TableView();
+//            Label temp = new Label("1  ");
+//            temp.setPrefWidth(20);
+//            TextArea area = new TextArea("test");
+//            area.setPrefWidth(265);
+//            HBox box = new HBox();
+//            box.getChildren().add(temp);
+//            box.getChildren().add(area);
+//
+//            scroll.setFocusTraversable(false);
+//            box.setFocusTraversable(false);
+//            temp.setFocusTraversable(false);
+//            area.setFocusTraversable(false);
+//
+////            inputContainer.getChildren().add(scroll);
+//        } catch(Exception ex) { }
     }
 
     public void onActionButtonNew(ActionEvent actionEvent) {
@@ -64,14 +85,7 @@ public class InteractiveController {
             String filename = selectedFile.getAbsolutePath();
 
             g = DBMLGrammarParser.parseDB(filename);
-            graphController.setGraph(g);
-            graphController.createTableList();
-            graphController.calculatePlacement();
-            graphController.sort();
-
-            canvasController.setGraph(g);
-            canvasController.setup();
-            canvasController.draw();
+            update();
         } catch (Exception ex) {
             System.out.println("Error reading file from Interactive Controller");
         }
@@ -99,8 +113,60 @@ public class InteractiveController {
 
     }
 
-    public void onKeyReleased(KeyEvent event) {
+    public void update() {
+        if(g == null) return;
+        graphController.setGraph(g);
+        graphController.createTableList();
+        graphController.calculatePlacement();
+        graphController.sort();
 
+        canvasController.setGraph(g);
+        canvasController.setup();
+        canvasController.draw();
+    }
+
+    private long lastReleased = 0;
+    public void onKeyReleased(KeyEvent event) {
+        String input = parserInput.getText();
+        g = DBMLGrammarParser.build(input);
+        update();
+        lastReleased = System.currentTimeMillis();
+        sync = true;
+    }
+
+    public void start() {
+        running = true;
+        Thread timer = new Thread(() -> {
+            sync();
+        });
+        //timer.start();
+    }
+    public void stop() {
+        running = false;
+    }
+
+    private boolean
+        running = false,
+        sync = false,
+        sleeping = false;
+    private void sync() {
+        long end;
+        while(running) {
+            end = 0;
+            if(sync) {
+                try {
+                    Thread.sleep(200);
+                    end = System.currentTimeMillis();
+                } catch (Exception ex) { }
+                if(end - lastReleased > 201) {
+                    lastReleased = end * 2;
+                    String input = parserInput.getText();
+                    g = DBMLGrammarParser.build(input);
+                    update();
+                    sync = false;
+                }
+            }
+        }
     }
 
     public void onKeyTyped(KeyEvent event) {
@@ -132,6 +198,5 @@ public class InteractiveController {
             y = (int) mouseEvent.getY();
 
         container = graphController.findContainer(x, y);
-        System.out.println(container);
     }
 }
