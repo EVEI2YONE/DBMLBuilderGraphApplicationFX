@@ -96,13 +96,13 @@ public class Table extends Shape {
             xOffset = width/2,
             yOffset = height/2;
         //draw container
-        g.setFill(currFill);
+        g.setFill(primaryFill);
         g.fillRect(x-xOffset, y-yOffset, width, height);
         //draw text
-        g.setFill(currStroke);
+        g.setFill(textFill);
         g.fillText(name, x-width/2+tablePaddingWidth, y + tablePaddingTop);
         //draw outline
-        g.setStroke(prevStroke);
+        g.setStroke(primaryStroke);
         g.strokeRect(x-xOffset, y-yOffset, width, height);
     }
 

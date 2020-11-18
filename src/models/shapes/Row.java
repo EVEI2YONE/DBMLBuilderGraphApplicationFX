@@ -42,13 +42,13 @@ public class Row extends Shape {
             xOffset = width/2,
             yOffset = height/2;
         //draw container
-        g.setFill(currFill);
+        g.setFill(primaryFill);
         g.fillRect(x-xOffset, y-yOffset, width, height);
         //draw text
-        g.setFill(currStroke);
+        g.setFill(textFill);
         g.fillText(name, x-width/2+rowPaddingWidth, y+rowPaddingTop);
         //draw outline of container
-        g.setStroke(prevStroke);
+        g.setStroke(secondaryStroke);
         g.strokeRect(x-xOffset, y-yOffset, width, height);
     }
 

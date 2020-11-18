@@ -31,17 +31,18 @@ public class CanvasController {
                 Table table = (Table) v.getValue();
                 Color
                     tableContainer = Color.rgb(0,55,180),
-                    textStroke = Color.rgb(250, 250, 250);
-                table.setCurrFill(tableContainer);
-                table.setCurrStroke(textStroke);
-                //table.setPrevStroke(tableContainer);
+                    textFill = Color.rgb(250, 250, 250);
+                table.setPrimaryFill(tableContainer);
+                table.setTextFill(textFill);
+                //table.setSecondaryStroke(tableContainer);
             }
             else if(v.getValue().getClass() == Row.class){
                 Row row = (Row)v.getValue();
                 Color rowContainer = Color.rgb(230, 230, 230, .9);
-                row.setCurrFill(rowContainer);
-                row.setCurrStroke(Color.BLACK);
-                //row.setPrevStroke(rowContainer);
+                row.setPrimaryFill(rowContainer);
+                row.setPrimaryStroke(Color.BLACK);
+                row.setTextFill(Color.BLACK);
+                //row.setSecondaryStroke(rowContainer);
             }
         }
         FontWeight weight = FontWeight.THIN;
